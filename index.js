@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const { readdirSync, lstatSync, writeFileSync} = require("fs");
 const settings = require("./settings.json")
+const prefix = settings.prefix
 const client = new Discord.Client()
 const owoify = require("owoifyx");
 const fetch = require("node-fetch");

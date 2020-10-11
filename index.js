@@ -71,6 +71,10 @@ client.on('message', async msg => {
 })
 
 client.on('ready', async () => {
+    if(settings.prefix == undefined ? [] : settings.prefix)
+        if (settings.prefix == undefined) {
+            settings.prefix = "%"
+        }
     function getimage(url) {
         return new Promise((resolve) => {
             fetch(url)

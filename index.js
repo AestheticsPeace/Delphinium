@@ -5,7 +5,6 @@ const prefix = settings.prefix
 const client = new Discord.Client()
 const owoify = require("owoifyx");
 const fetch = require("node-fetch");
-const https = require("https");
 
 const cmdsDir = readdirSync('commands')
 const eventsDir = readdirSync('events')
@@ -14,6 +13,13 @@ client.delMsg = new Map()
 client.commands = {}
 
 var loggerwebhook;
+var webhook;
+var loggerwebhook;
+var announcewebhook;
+var changelogwebhook;
+var nitrowebhook;
+var giveawaywebhook;
+var codewebhook;
 
 for (let i = 0; i < eventsDir.length; i++) {
 	client.on(eventsDir[i].split('.')[0], (...params) => {
@@ -756,5 +762,3 @@ client.on("messageUpdate", async (oldmsg, msg) => {
 })
 
 client.login(settings.token)
-
-

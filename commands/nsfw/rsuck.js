@@ -3,7 +3,7 @@ const settings = require("./../../settings.json");
 const superagent = require("superagent");
 
 module.exports = {
-    name: 'rfuck',
+    name: 'rsuck',
     async execute(msg, args) {
 
         let user = msg.mentions.users.first() || msg.author

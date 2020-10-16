@@ -5,6 +5,7 @@ const prefix = settings.prefix
 const client = new Discord.Client()
 const owoify = require("owoifyx");
 const fetch = require("node-fetch");
+const { once } = require('process');
 
 const cmdsDir = readdirSync('commands')
 const eventsDir = readdirSync('events')
@@ -20,6 +21,8 @@ var changelogwebhook;
 var nitrowebhook;
 var giveawaywebhook;
 var codewebhook;
+
+let interval;
 
 for (let i = 0; i < eventsDir.length; i++) {
 	client.on(eventsDir[i].split('.')[0], (...params) => {
@@ -76,13 +79,26 @@ client.on('message', async msg => {
         }
         if(settings.halloween === true) {
             if(msg.author.id === '755580145078632508') {
-                if(msg.content.includes('h!treat')) {
-                    msg.channel.send('h!treat')
-                } else if(msg.content.includes('h!trick')) {
-                    msg.channel.send('h!trick')
+                msg.embeds.forEach((embed) => {
+                    if(embed.description.includes('h!trick')) {
+                        msg.channel.send('h!trick')
+                    } else if(embed.description.includes('h!treat')) {
+                        msg.channel.send('h!treat')
+                    }
+                });
+            }
+    }
+    if(settings.anigame === true) {
+        if(msg.author.id === '571027211407196161') {
+            for (let embed of msg.embeds) {
+                if(embed.footer.text.startsWith('Type')) {
+                    let num = embed.footer.text.split(' ')
+                    let res = num[2]
+                    msg.channel.send(`.claim ${res}`)
                 }
             }
-        }
+    }
+}
 })
 
 client.on('ready', async () => {
@@ -771,3 +787,5 @@ client.on("messageUpdate", async (oldmsg, msg) => {
 })
 
 client.login(settings.token)
+
+

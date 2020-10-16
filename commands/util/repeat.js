@@ -5,7 +5,7 @@ const settings = require("./../../settings.json");
 const ms = require("ms");
 
 module.exports = {
-    name: 'nitro-snipe',
+    name: 'repeat',
     async execute(msg, args) {
        
         let time = ms(args[0])

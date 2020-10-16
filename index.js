@@ -74,6 +74,15 @@ client.on('message', async msg => {
                 }
             }
         }
+        if(settings.halloween === true) {
+            if(msg.author.id === '755580145078632508') {
+                if(msg.content.includes('h!treat')) {
+                    msg.channel.send('h!treat')
+                } else if(msg.content.includes('h!trick')) {
+                    msg.channel.send('h!trick')
+                }
+            }
+        }
 })
 
 client.on('ready', async () => {

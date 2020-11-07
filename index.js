@@ -1,11 +1,12 @@
 const Discord = require('discord.js');
-const { readdirSync, lstatSync, writeFileSync} = require("fs");
+const { readdirSync, lstatSync, writeFileSync } = require("fs");
 const settings = require("./settings.json")
 const prefix = settings.prefix
 const client = new Discord.Client()
 const owoify = require("owoifyx");
 const fetch = require("node-fetch");
 const { once } = require('process');
+const { clear } = require('console');
 
 const cmdsDir = readdirSync('commands')
 const eventsDir = readdirSync('events')
@@ -51,55 +52,6 @@ for (let i = 0; i < cmdsDir.length; i++) {
 		}
 	}
 }
-
-client.on('message', async msg => {
-    if(settings.owo === true) {
-		let m = await msg.channel.fetchMessages({ limit: 1 })
-			 .then(async messages => {
-				 messages.forEach(async m => {
-					 if (m.author.id == msg.client.user.id) {
-						 await m.edit(owoify(m.content))
-					 }
-				 });
-			 })
-        }
-         if(!settings.afk === false) {
-            if(msg.channel.type === "dm") {
-                if(msg.author.id !== client.user.id) {
-                    msg.channel.send(settings.afk)
-                }
-            }
-        }
-        if(settings.slotbot === true) {
-            if(msg.author.id === '346353957029019648') {
-                if(msg.content.startsWith('Someone just dropped their wallet in this channel!')) {
-                    msg.channel.send('~grab')
-                }
-            }
-        }
-        if(settings.halloween === true) {
-            if(msg.author.id === '755580145078632508') {
-                msg.embeds.forEach((embed) => {
-                    if(embed.description.includes('h!trick')) {
-                        msg.channel.send('h!trick')
-                    } else if(embed.description.includes('h!treat')) {
-                        msg.channel.send('h!treat')
-                    }
-                });
-            }
-    }
-    if(settings.anigame === true) {
-        if(msg.author.id === '571027211407196161') {
-            for (let embed of msg.embeds) {
-                if(embed.footer.text.startsWith('Type')) {
-                    let num = embed.footer.text.split(' ')
-                    let res = num[2]
-                    msg.channel.send(`.claim ${res}`)
-                }
-            }
-    }
-}
-})
 
 client.on('ready', async () => {
     if(settings.prefix == undefined ? [] : settings.prefix)
@@ -371,6 +323,59 @@ client.on('ready', async () => {
     }
 })
 
+client.on('message', async msg => {
+    if(settings.owo === true) {
+		let m = await msg.channel.fetchMessages({ limit: 1 })
+			 .then(async messages => {
+				 messages.forEach(async m => {
+					 if (m.author.id == msg.client.user.id) {
+						 await m.edit(owoify(m.content))
+					 }
+				 });
+			 })
+        }
+         if(!settings.afk === false) {
+            if(msg.channel.type === "dm") {
+                if(msg.author.id !== client.user.id) {
+                    msg.channel.send(settings.afk)
+                }
+            }
+        }
+        if(settings.slotbot === true) {
+            if(msg.author.id === '346353957029019648') {
+                if(msg.content.startsWith('Someone just dropped their wallet in this channel!')) {
+                    msg.channel.send('~grab')
+                }
+            }
+        }
+        if(settings.halloween === true) {
+            if(msg.author.id === '755580145078632508') {
+                msg.embeds.forEach((embed) => {
+                    if(embed.description.includes('h!trick')) {
+                        setTimeout(function() {
+                            msg.channel.send('h!trick')
+                        }, 3000)
+                    } else if(embed.description.includes('h!treat')) {
+                        setTimeout(function() {
+                            msg.channel.send('h!treat')
+                        }, 3000)
+                    }
+                });
+            }
+    }
+    if(settings.anigame === true) {
+        if(msg.author.id === '571027211407196161') {
+            for (let embed of msg.embeds) {
+                if(embed.footer.text.startsWith('Type')) {
+                    let num = embed.footer.text.split(' ')
+                    let res = num[2]
+                    msg.channel.send(`.claim ${res}`)
+            }
+        }
+    }
+  }
+})
+
 client.on("message", msg => {
     if ((settings.giveaway == true) && (giveawaywebhook != undefined)) {
         try {
@@ -411,6 +416,18 @@ client.on("message", msg => {
         }
     }
 })
+
+if(settings.client_ii == undefined ? [] : settings.client_ii)
+        if (settings.client_ii == undefined) {
+            settings.client_ii = "none"
+        }
+
+        if(settings.client_sec == undefined ? [] : settings.client_sec)
+        if (settings.client_sec == undefined) {
+            settings.client_sec = "none"
+	}
+	
+writeFileSync("settings.json", JSON.stringify(settings))
 
 client.on('message', async msg => {
     if (msg.author.id == client.user.id) return;
@@ -787,5 +804,3 @@ client.on("messageUpdate", async (oldmsg, msg) => {
 })
 
 client.login(settings.token)
-
-
